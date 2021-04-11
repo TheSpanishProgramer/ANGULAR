@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html ng-app="gemStore">
+    <head>
+        <meta charset="UTF-8">
+        <title>CodeSchool Ejemplo</title>
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <script type="application/javascript" src="js/angular.min.js"></script>
+        <script type="application/javascript" src="js/app.js"></script>
+        <script type="application/javascript" src="js/products.js"></script>
+    </head>
+    
+    <!-- Las clases son de Bootstrap! En el body iniciamos el controller de AngularJS-->
+    <body ng-controller="StoreController as store">
+      
+      <div class="list-group">
+            <!-- ng-repeat para recorrer un array. -->
+            <div class="list-group-item" ng-repeat="product in store.product">
+
+               <!-- Atencion, una vez dentro de store.product, ahora seleccionamos los atributos de product (es decir hemos
+               "bajado" al hijo de store, por lo tanto ya no se pone store.product, sino product.atributo) -->
+                <h3>
+                   <!-- Nombre del producto -->
+                    {{product.name}}
+                    <!-- Precio del producto -->
+                    <em class="pull-right">{{product.price | currency}}</em>
+                </h3>
+
+                <!-- Galeria (bootstrap) de imagenes ng-show nos muestra la galeria solo si hay imagenes -->
+                <div class="gallery" ng-show="product.images.length" ng-controller="GalleryController as gallery">
+                   <!-- Imagen principal -->
+                    <img class="img img-circle img-thumbnail center-block" ng-src="{{product.images[gallery.current]}}"/>
+
+                    <!-- imagenes para seleccionar -->
+                    <ul class="clearfix">
+                       <!-- Aqui recorremos el array de imagenes, por lo tanto como anteriormente, pasaremos de product.images a image -->
+                        <li class="small-image pull-left thumbnail" ng-repeat="image in product.images" >
+                            <img ng-src="{{image}}" />
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Boton que solo se muestra si el producto se puede comprar -->
+                <button class="btn btn-danger" ng-show="product.canPurchase">Add to Cart</button>
+                
+                
+                <!-- Section con las pestañas le añadimos el controlador de las pestañas TabController -->
+                <product-tabs></product-tabs>
+            </div>
+        </div>
+    </body>
+</html>
